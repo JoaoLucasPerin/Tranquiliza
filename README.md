@@ -3,3 +3,5 @@ Projeto do aplicativo Tranquiliza, para a disciplina de Projeto de Análise e De
 
 [Tabela Comparativa com Sistemas Correlatos](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Tranquiliza-tabela_comparativa.xlsx)
 --
+[Visão do Produto](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Tranquiliza%20-%20Vis%C3%A3o%20do%20Produto.pptx)
+--
