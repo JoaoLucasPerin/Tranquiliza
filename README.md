@@ -7,3 +7,5 @@ Projeto do aplicativo Tranquiliza, para a disciplina de Projeto de Análise e De
 --
 [É - NÃO É - FAZ - NÃO FAZ](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Tranquiliza%20-%20%C3%89%2C%20N%C3%A3o%20%C3%A9%2C%20Faz%2C%20N%C3%A3o%20faz.pptx)
 --
+[Canvas MVP](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/MVP_versao2.pptx)
+--
