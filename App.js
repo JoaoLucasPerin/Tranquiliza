@@ -1,11 +1,11 @@
-
-
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {StyleSheet, Text, View, Button, Image} from 'react-native';
 import C1 from './componentes/comp1'
-
+import Modal from './componentes/Modal'
+import CxNum from './componentes/CaixaDeNumero'
+import Respira from './componentes/Respira'
 
 const Pilha = createStackNavigator();
 
@@ -65,8 +65,11 @@ function TelaAtividade1({navigation}){
           alignItems:'center',
           justifyContent:'center'}
           }>
-            <Text> Atividade1</Text>
-            <Text> ....</Text>
+            <Text style={estilos.titulo}> Atividade de foco da mente</Text>
+            <Text style={estilos.subtitulo}> Jogo do tira 7 </Text>
+            <CxNum/>
+            <Modal/>
+
             <Button 
             title="Menu Principal"
             onPress={()=>navigation.navigate('Menu Principal')}
@@ -83,8 +86,10 @@ function TelaAtividade2({navigation}){
           alignItems:'center',
           justifyContent:'center'}
           }>
-            <Text> Atividade2</Text>
-            <Text> ....</Text>
+            <Text  style={estilos.titulo}> Atividade de respiração </Text>
+            <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
+            <Respira/>
+
             <Button 
             title="Menu Principal"
             onPress={()=>navigation.navigate('Menu Principal')}
@@ -146,6 +151,12 @@ const estilos = StyleSheet.create({
     backgroundColor:'#ffffff', //'#ADD8E6'
     alignItems:'center',
     justifyContent:'center'
+  },
+  titulo:{
+    fontSize: 25
+  },
+  subtitulo:{
+    fontSize: 20
   }
 });
 
