@@ -1,9 +1,14 @@
 import React, {useState} from 'react'
-import {View, Text, Button, Modal, StyleSheet} from 'react-native'
+import {View, Text, Button, Modal, StyleSheet, TouchableOpacity} from 'react-native'
 
 export default function(){
 
     const [visivel,setVisivel]=useState(false)
+    const AppButton = ({ onPress, title }) => (
+        <TouchableOpacity onPress={onPress} style={estilos.appButtonContainer}>
+          <Text style={estilos.appButtonText}>{title}</Text>
+        </TouchableOpacity>
+      );
 
     return(
         <View>
@@ -25,7 +30,7 @@ export default function(){
                     />
                 </View>
             </Modal>
-            <Button
+            <AppButton
                 title="Como jogar"
                 onPress={()=>{setVisivel(true)}}
             />
@@ -43,5 +48,28 @@ const estilos=StyleSheet.create({
   },
   textoModal:{
       color:"#fff"
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#009688",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  screenContainer: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 16
+  },
+  space: {
+    width: 20, // or whatever size you need
+    height: 20,
   }
 })

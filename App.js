@@ -1,14 +1,28 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {StyleSheet, Text, View, Button, Image} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+//import {createDrawerNavigator} from '@react-navigation/drawer'
+
+import {ImageBackground, StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
 import C1 from './componentes/comp1'
 import Modal from './componentes/Modal'
 import CxNum from './componentes/CaixaDeNumero'
 import Respira from './componentes/Respira'
 
 const Pilha = createStackNavigator();
+//const Guias = createBottomTabNavigator();
+//const Gavetas = createDrawerNavigator();
 
+const AppButton = ({ onPress, title }) => (
+  <TouchableOpacity onPress={onPress} style={estilos.appButtonContainer}>
+    <Text style={estilos.appButtonText}>{title}</Text>
+  </TouchableOpacity>
+);
+
+// FUNCTION PARA O JOGO DA RESPIRACAO:
+
+//
 function TelaInicial({navigation}){
   return(
       <View style={
@@ -22,12 +36,10 @@ function TelaInicial({navigation}){
               style={estilos.logo}
             />
           </View>
-
-          <Button 
+          <AppButton 
             title="Menu Principal"
             onPress={()=>navigation.navigate('Menu Principal')}
           />
-
       </View>
   );
 }
@@ -35,70 +47,170 @@ function TelaInicial({navigation}){
 
 function MenuPrincipal({navigation}){
   return(
+    <ImageBackground
+      source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+    
       <View style={
         {flex:1,
         alignItems:'center',
         justifyContent:'center'}
         }>
-          <Text> Selecione a atividade que deseja executar </Text>
-          <Button 
-              title="Atividade 1 - Foco da mente"
-              onPress={()=>navigation.navigate('Atividade 1 - Foco da mente')}
-            />
-          <Button 
-            title="Atividade 2 - Respiração"
-            onPress={()=>navigation.navigate('Atividade 2 - Respiração')}
+        <Text style={estilos.titulo}> Selecione a atividade que deseja </Text>
+        <Text style={estilos.titulo}> executar </Text>
+        <View style={estilos.space} /> 
+        <AppButton 
+          title="Atividade 1 - Foco da mente"
+          onPress={()=>navigation.navigate('Menu Atividade 1')}
+        />
+        <View style={estilos.space} /> 
+        <AppButton 
+          title="Atividade 2 - Respiração"
+          onPress={()=>navigation.navigate('Menu Atividade 2')}
+        />
+        <View style={estilos.space} /> 
+        <AppButton 
+          title="Retornar para a tela inicial"
+          onPress={()=>navigation.navigate('Tela Inicial')}
+        />
+
+      </View>
+      </ImageBackground>
+
+  );
+}
+
+function MenuAtividade1({navigation}){
+  return(
+    <ImageBackground
+      source={require('./assets/foco_mente.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+          <Text style={estilos.titulo}> Atividade de foco da mente</Text>
+          <Text style={estilos.subtitulo}> Jogo do tira 7 </Text>
+          <View style={estilos.space} /> 
+
+          <AppButton 
+            title="Jogar atividade 1"
+            onPress={()=>navigation.navigate('Jogar Atividade 1')}
           />
-          <Button 
-            title="Retornar para a tela inicial"
-            onPress={()=>navigation.navigate('Tela Inicial')}
+          <View style={estilos.space} /> 
+          <AppButton 
+            title="Assistir atividade 1"
+            onPress={()=>navigation.navigate('Assistir Atividade 1')}
           />
+          <View style={estilos.space} /> 
+          <Modal/>
+      </View>
+      </ImageBackground>
+  );
+}
+function JogarAtividade1({navigation}){
+    return(
+        <View style={
+          {flex:1,
+          alignItems:'center',
+          justifyContent:'center'}
+          }>
+          <CxNum/>
+        </View>
+    );
+}
+function AssistirAtividade1({navigation}){
+  return(
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+
+        <CxNum/>
 
       </View>
   );
 }
 
-function TelaAtividade1({navigation}){
+
+
+function MenuAtividade2({navigation}){
     return(
+      <ImageBackground
+      source={require('./assets/respiracao.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+      > 
         <View style={
           {flex:1,
           alignItems:'center',
           justifyContent:'center'}
           }>
-            <Text style={estilos.titulo}> Atividade de foco da mente</Text>
-            <Text style={estilos.subtitulo}> Jogo do tira 7 </Text>
-            <CxNum/>
-            <Modal/>
-
-            <Button 
-            title="Menu Principal"
-            onPress={()=>navigation.navigate('Menu Principal')}
-          />
-
+          <Text  style={estilos.titulo}> Atividade de respiração </Text>
+          <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
+          <View style={estilos.space} /> 
+        <AppButton 
+          title="Jogar Atividade 2"
+          onPress={()=>navigation.navigate('Jogar Atividade 2')}
+        />
+        <View style={estilos.space} /> 
+        <AppButton 
+          title="Assistir Atividade 2"
+          onPress={()=>navigation.navigate('Assistir Atividade 2')}
+        />
+        <View style={estilos.space} /> 
+        <AppButton 
+          title="Menu Principal"
+          onPress={()=>navigation.navigate('Menu Principal')}
+        />
         </View>
+      </ImageBackground>
     );
 }
 
-function TelaAtividade2({navigation}){
-    return(
-        <View style={
-          {flex:1,
-          alignItems:'center',
-          justifyContent:'center'}
-          }>
-            <Text  style={estilos.titulo}> Atividade de respiração </Text>
-            <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
-            <Respira/>
+function JogarAtividade2({navigation}){
+  return(
+    
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Atividade de respiração </Text>
+        <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
+        
+      <Respira />
 
-            <Button 
-            title="Menu Principal"
-            onPress={()=>navigation.navigate('Menu Principal')}
-            />
-            
-        </View>
-    );
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+  );
 }
 
+function AssistirAtividade2({navigation}){
+  return(
+    
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Atividade de respiração </Text>
+        <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
+      <Respira />
+
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+  );
+}
 
 // Componente em forma de funcao
 export default function Tranquiliza(){
@@ -109,7 +221,8 @@ export default function Tranquiliza(){
               <Pilha.Screen
                   name="Tela Inicial"
                   component={TelaInicial}
-                  options={{title:' '}}
+                  options={{title:' ',
+                headerShown: false}}
                 />
                 <Pilha.Screen
                   name="Menu Principal"
@@ -117,18 +230,42 @@ export default function Tranquiliza(){
                   options={{title:'Menu'}}
                 />
                 <Pilha.Screen
-                  name="Atividade 1 - Foco da mente"
-                  component={TelaAtividade1}
-                  options={{title:'Atividade 1'}}
-                />
+                name="Menu Atividade 1"
+                component={MenuAtividade1}
+                options={{title:'Menu Atividade 1'}}
+                    />
+                    <Pilha.Screen
+                    name="Jogar Atividade 1"
+                    component={JogarAtividade1}
+                    options={{title:'Jogar Atividade 1'}}
+                    />
+                    <Pilha.Screen
+                    name="Assistir Atividade 1"
+                    component={AssistirAtividade1}
+                    options={{title:'Assistir Atividade 1'}}
+                    />
                 <Pilha.Screen
-                  name="Atividade 2 - Respiração"
-                  component={TelaAtividade2}
-                  options={{title:'Atividade 2'}}
+                  name="Menu Atividade 2"
+                  component={MenuAtividade2}
+                  options={{title:'Menu Atividade 2',
+                  }}
                 />
+                  <Pilha.Screen
+                    name="Jogar Atividade 2"
+                    component={JogarAtividade2}
+                    options={{title:'Jogar Atividade 2',
+                    }}
+                  />
+                  <Pilha.Screen
+                    name="Assistir Atividade 2"
+                    component={AssistirAtividade2}
+                    options={{title:'Assistir Atividade 2',
+                    }}
+                  />
               </Pilha.Navigator>
       </NavigationContainer>
     
+
   );
 };
 
@@ -157,6 +294,29 @@ const estilos = StyleSheet.create({
   },
   subtitulo:{
     fontSize: 20
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#009688",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  screenContainer: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 16
+  },
+  space: {
+    width: 20, // or whatever size you need
+    height: 20,
   }
 });
 

@@ -1,47 +1,47 @@
-import React, {useState, useEffect} from 'react'
-import {View, Text} from 'react-native'
+import * as React from 'react';
+import { Text, View, StyleSheet, Animated, Button } from 'react-native';
+import Constants from 'expo-constants';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
 
-export default function(){
+export default function App() {
+  const [isPlaying, setIsPlaying] = React.useState(true)
 
-    const [timerCount, setTimer] = useState(3)
-    const [inspirando, setInspirando] = useState(true)
+  return (
+    <View style={styles.container}>
+      <CountdownCircleTimer
+        isPlaying={isPlaying}
+        duration={9}
+        colors={[
+          ['#004777', 0.4],
+          ['#F7B801', 0.4],
+          ['#A30000', 0.2],
+        ]}
+        onComplete={() => [true]}
+    >
+      {({ remainingTime, animatedColor }) => (
+        <Animated.Text style={{ color: animatedColor, fontSize: 40 }}>
 
-
-    useEffect(() => {
-      let interval = setInterval(() => {
-        setTimer(lastTimerCount => {
-            lastTimerCount <= 1 && clearInterval(interval)
-            return lastTimerCount - 1
-        })
-      }, 1000) //each count lasts for a second
-      //cleanup the interval on complete
-      return () => {clearInterval(interval), 
-                    setInspirando(!inspirando)}
-    }, []);
-
-    const inspirar = () => {
-        if(inspirando){
-            return  <Text> Inspire... {timerCount}
-                </Text>
-        } else {
-            return null
-        }
-    }
-
-    const expirar = () => {
-        if(!inspirando){            
-            return  <Text> Expire... {timerCount}
-            </Text>
-        }
-        return null        
-    }
-
-    return(
-        <View>
-            {inspirar()}
-            {expirar()}
-        </View>
-        
-        )
+          {remainingTime>7?"Inspire":remainingTime>6?"Segure":"Expire"}
+        </Animated.Text>
+      )}
+    </CountdownCircleTimer>
+    <Button title="Pausar" onPress={() => setIsPlaying(prev => !prev)}/>
+  
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: Constants.statusBarHeight,
+    //marginTop: 175,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  }
+});
+
+// Referencia: https://github.com/vydimitrov/react-countdown-circle-timer
