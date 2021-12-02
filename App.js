@@ -1,14 +1,164 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 //import {createDrawerNavigator} from '@react-navigation/drawer'
 
 import {ImageBackground, StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
-import C1 from './componentes/comp1'
+
 import Modal from './componentes/Modal'
 import CxNum from './componentes/CaixaDeNumero'
+import CxNumAss from './componentes/CaixaDeNumeroAssistida'
 import Respira from './componentes/Respira'
+import RespiraInterativa from './componentes/RespiraInterativa'
+import ImpHist from './componentes/ImprimeHistorico2'
+
+//import Sound from 'react-native-sound';
+//import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
+// import dings from './assets/oceans_margaret.mp3';
+
+
+//import Historico from './services/sqlite/Historico'
+
+/**
+ * Example Historico Object: {
+ *  id: (auto generated in sqlite), 
+ *  atividade: 1,
+ *  modo: 1,
+ *  data: '2021-11-12',
+ *  horario: '18:43:10.0000000'
+ * } 
+ */
+
+/*
+ const printHistorico = (historico) => {
+  console.log(`id:${historico.id}, atividade:${historico.atividade}, modo:${historico.modo}, data:${historico.data}, hora:${historico.hora}, hora:${historico.minuto}, hora:${historico.segundo}`)
+}
+*/
+
+/* --- Para testar o CRUD: ---
+/*
+const App = () => {
+  const [currentDate, setCurrentDate] = useState('');
+  const [hora, setHora] = useState('');
+  const [minuto, setMinuto] = useState('');
+  const [segundo, setSegundo] = useState('');
+
+  useEffect(() => {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    setCurrentDate(
+      date + '/' + month + '/' + year 
+      //+ ' ' + hours + ':' + min + ':' + sec
+    );
+    setHora(
+      //date + '/' + month + '/' + year 
+      hours 
+    );
+    setMinuto(
+      //date + '/' + month + '/' + year 
+      min 
+    );
+    setSegundo(
+      //date + '/' + month + '/' + year 
+      sec 
+    );
+  }, []);
+
+//forced error catch
+Historico.find( -1 ) 
+.then( historico => printHistorico(historico) )
+.catch( err => console.log(err) )
+
+//create
+Historico.create( {atividade:1, modo:1, data:'2021-11-12', hora:19, minuto:25, segundo:59 } )
+.then( id => console.log('Historico created with id: '+ id) )
+.catch( err => console.log(err) )
+
+Historico.create( {atividade:2, modo:2, data:currentDate, hora:hora, minuto:minuto, segundo:segundo} )
+.then( id => console.log('Historico created with id: '+ id) )
+.catch( err => console.log(err) )
+
+//Historico.create( {atividade:1, data:'corcel', horario:70} )
+//  .then( id => console.log('Historico created with id: '+ id) )
+//  .catch( err => console.log(err) )
+
+//find id=1
+Historico.find( 1 ) 
+.then( historico => printHistorico(historico) )
+.catch( err => console.log(err) )
+//find id=2
+Historico.find( 2 ) 
+.then( historico => printHistorico(historico) )
+.catch( err => console.log(err) )
+
+//find atividade=1
+Historico.findByAtividade( 1 ) 
+.then( historicos => console.log(historicos) )
+.catch( err => console.log(err) )
+
+
+/*
+//update
+Historico.update( 1, {atividade:'gm', data:'corsa', horario:70} )
+.then( updated => console.log('Historicos updated: '+ updated) )
+.catch( err => console.log(err) )
+
+//all
+Historico.all()
+.then( 
+  historicos => historicos.forEach( c => printHistorico(c) )
+)
+
+//delete
+Historico.remove(1)
+.then( updated => console.log('Historicos removed: '+ updated) )
+.catch( err => console.log(err) )
+
+Historico.remove(2)
+.then( updated => console.log('Historicos removed: '+ updated) )
+.catch( err => console.log(err) )
+
+Historico.remove(3)
+.then( updated => console.log('Historicos removed: '+ updated) )
+.catch( err => console.log(err) )
+*/
+//forced empty array (all=[])
+/*
+Historico.all()
+.then( 
+  historicos => console.log(historicos)
+)
+
+//export default function App() {
+return(
+  
+  //return (
+    <View style={styles.container}>
+      <Text>(Check Console)</Text>
+    </View>
+  );
+  
+}
+
+export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center', 
+    justifyContent: 'center', 
+  },
+});
+*/
+// --- Fim do para testar o CRUD ---
 
 const Pilha = createStackNavigator();
 //const Guias = createBottomTabNavigator();
@@ -44,7 +194,6 @@ function TelaInicial({navigation}){
   );
 }
 
-
 function MenuPrincipal({navigation}){
   return(
     <ImageBackground
@@ -57,8 +206,8 @@ function MenuPrincipal({navigation}){
         alignItems:'center',
         justifyContent:'center'}
         }>
-        <Text style={estilos.titulo}> Selecione a atividade que deseja </Text>
-        <Text style={estilos.titulo}> executar </Text>
+        <Text style={estilos.titulo}> Selecione a atividade que</Text>
+        <Text style={estilos.titulo}> deseja executar</Text>
         <View style={estilos.space} /> 
         <AppButton 
           title="Atividade 1 - Foco da mente"
@@ -71,15 +220,33 @@ function MenuPrincipal({navigation}){
         />
         <View style={estilos.space} /> 
         <AppButton 
+          title="Ansiedade e Pânico"
+          onPress={()=>navigation.navigate('Ansiedade e Pânico')}
+        />
+        <View style={estilos.space} />
+        <AppButton 
+          title="Histórico"
+          onPress={()=>navigation.navigate('Histórico')}
+        />
+        <View style={estilos.space} />
+        
+        
+        <AppButton 
           title="Retornar para a tela inicial"
           onPress={()=>navigation.navigate('Tela Inicial')}
         />
-
       </View>
       </ImageBackground>
 
   );
 }
+/*
+<View style={estilos.space} />
+<AppButton 
+          title="Configurações de Som"
+          onPress={()=>navigation.navigate('Som')}
+        />
+*/ 
 
 function MenuAtividade1({navigation}){
   return(
@@ -97,13 +264,13 @@ function MenuAtividade1({navigation}){
           <View style={estilos.space} /> 
 
           <AppButton 
-            title="Jogar atividade 1"
-            onPress={()=>navigation.navigate('Jogar Atividade 1')}
+            title="Modo Interativo - Atividade 1"
+            onPress={()=>navigation.navigate('Modo Interativo - Atividade 1')}
           />
           <View style={estilos.space} /> 
           <AppButton 
-            title="Assistir atividade 1"
-            onPress={()=>navigation.navigate('Assistir Atividade 1')}
+            title="Modo Não Interativo - Atividade 1"
+            onPress={()=>navigation.navigate('Modo Não Interativo - Atividade 1')}
           />
           <View style={estilos.space} /> 
           <Modal/>
@@ -130,13 +297,11 @@ function AssistirAtividade1({navigation}){
         justifyContent:'center'}
         }>
 
-        <CxNum/>
+        <CxNumAss/>
 
       </View>
   );
 }
-
-
 
 function MenuAtividade2({navigation}){
     return(
@@ -152,14 +317,11 @@ function MenuAtividade2({navigation}){
           <Text  style={estilos.titulo}> Atividade de respiração </Text>
           <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
           <View style={estilos.space} /> 
-        <AppButton 
-          title="Jogar Atividade 2"
-          onPress={()=>navigation.navigate('Jogar Atividade 2')}
-        />
+        
         <View style={estilos.space} /> 
         <AppButton 
-          title="Assistir Atividade 2"
-          onPress={()=>navigation.navigate('Assistir Atividade 2')}
+          title="Modo Não Interativo - Atividade 2"
+          onPress={()=>navigation.navigate('Modo Não Interativo - Atividade 2')}
         />
         <View style={estilos.space} /> 
         <AppButton 
@@ -170,6 +332,12 @@ function MenuAtividade2({navigation}){
       </ImageBackground>
     );
 }
+/* deixado para a mvp 2: acima do "Modo Não Interativo - Atividade 2":
+<AppButton 
+          title="Modo Interativo - Atividade 2"
+          onPress={()=>navigation.navigate('Modo Interativo - Atividade 2')}
+        />
+*/
 
 function JogarAtividade2({navigation}){
   return(
@@ -182,7 +350,7 @@ function JogarAtividade2({navigation}){
         <Text  style={estilos.titulo}> Atividade de respiração </Text>
         <Text  style={estilos.subtitulo}> Evitando hiperventilar </Text>
         
-      <Respira />
+      <RespiraInterativa />
 
       <AppButton 
         title="Menu Principal"
@@ -212,7 +380,131 @@ function AssistirAtividade2({navigation}){
   );
 }
 
-// Componente em forma de funcao
+function AnsiedadeEPanico({navigation}){
+  return(
+    <ImageBackground
+      source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Ansiedade e Pânico </Text>
+        <Text  style={estilos.subtitulo}> Entendo um pouco sobre elas </Text>
+        <View style={estilos.space} /> 
+      <Text> blablabla blabla blabla </Text>
+
+      <View style={estilos.space} /> 
+      
+      <View style={estilos.space} /> 
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+    </ImageBackground>
+  );
+}
+// <AnsiedadeEPanicoSaibaMais />  trazer o saiba mais como um componente simples...
+
+function Histórico({navigation}){
+  return(
+    <ImageBackground
+      source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Histórico </Text>
+        <Text  style={estilos.subtitulo}> Veja como foram suas últimas atividades aqui conosco </Text>
+        <View style={estilos.space} /> 
+      
+      <ImpHist />
+      
+      <View style={estilos.space} /> 
+      
+      <View style={estilos.space} /> 
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+    </ImageBackground>
+  );
+}
+
+// som
+/*
+function Som({navigation}){
+  return(
+    <ImageBackground
+      source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Som </Text>
+        <Text  style={estilos.subtitulo}> Configurações de Som </Text>
+        <View style={estilos.space} /> 
+      
+      <View style={estilos.space} /> 
+      <View style={estilos.containerBotaoSom}>
+      <TouchableOpacity style={estilos.playBtnSom} onPress={playPause}>
+        <Ionicons name={'ios-play-outline'} size={36} color={'#fff'} />
+      </TouchableOpacity>
+    </View>
+      <View style={estilos.space} /> 
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+    </ImageBackground>
+  );
+}
+var Sound = require('react-native-sound');
+
+Sound.setCategory('Playback');
+var ding = new Sound(dings, error => {
+  if (error) {
+    console.log('failed to load the sound', error);
+    return;
+  }
+  // if loaded successfully
+  console.log(
+    'duration in seconds: ' +
+      ding.getDuration() +
+      'number of channels: ' +
+      ding.getNumberOfChannels(),
+  );
+});
+
+useEffect(() => {
+  ding.setVolume(1);
+  return () => {
+    ding.release();
+  };
+}, []);
+const playPause = () => {
+  ding.play(success => {
+    if (success) {
+      console.log('successfully finished playing');
+    } else {
+      console.log('playback failed due to audio decoding errors');
+    }
+  });
+};
+*/
+// Componente em forma de funcao / main:
+
 export default function Tranquiliza(){
   return (
     
@@ -235,14 +527,14 @@ export default function Tranquiliza(){
                 options={{title:'Menu Atividade 1'}}
                     />
                     <Pilha.Screen
-                    name="Jogar Atividade 1"
+                    name="Modo Interativo - Atividade 1"
                     component={JogarAtividade1}
-                    options={{title:'Jogar Atividade 1'}}
+                    options={{title:'Modo Interativo - Atividade 1'}}
                     />
                     <Pilha.Screen
-                    name="Assistir Atividade 1"
+                    name="Modo Não Interativo - Atividade 1"
                     component={AssistirAtividade1}
-                    options={{title:'Assistir Atividade 1'}}
+                    options={{title:'Modo Não Interativo - Atividade 1'}}
                     />
                 <Pilha.Screen
                   name="Menu Atividade 2"
@@ -251,24 +543,48 @@ export default function Tranquiliza(){
                   }}
                 />
                   <Pilha.Screen
-                    name="Jogar Atividade 2"
-                    component={JogarAtividade2}
-                    options={{title:'Jogar Atividade 2',
-                    }}
-                  />
-                  <Pilha.Screen
-                    name="Assistir Atividade 2"
+                    name="Modo Não Interativo - Atividade 2"
                     component={AssistirAtividade2}
-                    options={{title:'Assistir Atividade 2',
+                    options={{title:'Modo Não Interativo - Atividade 2',
                     }}
                   />
+                <Pilha.Screen
+                  name="Ansiedade e Pânico"
+                  component={AnsiedadeEPanico}
+                  options={{title:'Ansiedade e Pânico',
+                  }}
+                />
+                <Pilha.Screen
+                  name="Histórico"
+                  component={Histórico}
+                  options={{title:'Histórico',
+                  }}
+                />
+                
               </Pilha.Navigator>
       </NavigationContainer>
     
 
   );
 };
-
+/*
+<Pilha.Screen
+                  name="Som"
+                  component={Som}
+                  options={{title:'Som',
+                  }}
+                />
+*/
+/* deixados para a mvp 2:
+// 1.  nao interativo do jogo 1 de foco de mente: usuario nao clicar em nenhuma tecla.
+// 2. acima do "Modo Não Interativo - Atividade 2" : 
+<Pilha.Screen
+                    name="Modo Interativo - Atividade 2"
+                    component={JogarAtividade2}
+                    options={{title:'Modo Interativo - Atividade 2',
+                    }}
+                  />
+*/
 
 const estilos = StyleSheet.create({
   container:{
@@ -317,7 +633,16 @@ const estilos = StyleSheet.create({
   space: {
     width: 20, // or whatever size you need
     height: 20,
-  }
+  },
+  containerBotaoSom: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#000',
+    },
+    playBtnSom: {
+      padding: 20,
+    }
 });
 
 
