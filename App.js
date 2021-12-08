@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Component} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 //import {createDrawerNavigator} from '@react-navigation/drawer'
 
-import {ImageBackground, StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View, Button, Image, TouchableOpacity, 
+  ActivityIndicator} from 'react-native';
 
 import Modal from './componentes/Modal'
 import CxNum from './componentes/CaixaDeNumero'
@@ -18,7 +19,10 @@ import ImpHist from './componentes/ImprimeHistorico2'
 //import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Ionicons } from '@expo/vector-icons';
 // import dings from './assets/oceans_margaret.mp3';
+import { Audio } from 'expo-av';
+import Constants from 'expo-constants';
 
+import Notif from './componentes/Notificacoes'
 
 //import Historico from './services/sqlite/Historico'
 
@@ -186,6 +190,9 @@ function TelaInicial({navigation}){
               style={estilos.logo}
             />
           </View>
+          
+          <Notif />
+
           <AppButton 
             title="Menu Principal"
             onPress={()=>navigation.navigate('Menu Principal')}
@@ -229,8 +236,11 @@ function MenuPrincipal({navigation}){
           onPress={()=>navigation.navigate('Histórico')}
         />
         <View style={estilos.space} />
-        
-        
+        <AppButton 
+          title="Configurações de Som"
+          onPress={()=>navigation.navigate('Som')}
+        />      
+        <View style={estilos.space} /> 
         <AppButton 
           title="Retornar para a tela inicial"
           onPress={()=>navigation.navigate('Tela Inicial')}
@@ -241,11 +251,7 @@ function MenuPrincipal({navigation}){
   );
 }
 /*
-<View style={estilos.space} />
-<AppButton 
-          title="Configurações de Som"
-          onPress={()=>navigation.navigate('Som')}
-        />
+
 */ 
 
 function MenuAtividade1({navigation}){
@@ -439,29 +445,107 @@ function Histórico({navigation}){
 }
 
 // som
-/*
+
+const SampleTrack = require('./assets/oceans_margaret.mp3');
 function Som({navigation}){
+  const [Loaded, SetLoaded] = React.useState(false);
+  const [Loading, SetLoading] = React.useState(false);
+  const sound = React.useRef(new Audio.Sound());
+
+  React.useEffect(() => {
+    LoadAudio();
+  }, []);
+
+  const PlayAudio = async () => {
+    try {
+      const result = await sound.current.getStatusAsync();
+      if (result.isLoaded) {
+        if (result.isPlaying === false) {
+          sound.current.playAsync();
+        }
+      }
+    } catch (error) {}
+  };
+
+  const PauseAudio = async () => {
+    try {
+      const result = await sound.current.getStatusAsync();
+      if (result.isLoaded) {
+        if (result.isPlaying === true) {
+          sound.current.pauseAsync();
+        }
+      }
+    } catch (error) {}
+  };
+
+  const LoadAudio = async () => {
+    SetLoading(true);
+    const checkLoading = await sound.current.getStatusAsync();
+    if (checkLoading.isLoaded === false) {
+      try {
+        const result = await sound.current.loadAsync(SampleTrack, {}, true);
+        if (result.isLoaded === false) {
+          SetLoading(false);
+          console.log('Error in Loading Audio');
+        } else {
+          SetLoading(false);
+          SetLoaded(true);
+        }
+      } catch (error) {
+        console.log(error);
+        SetLoading(false);
+      }
+    } else {
+      SetLoading(false);
+    }
+  };
+
   return(
     <ImageBackground
       source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
       style={{width: '100%', height: '100%'}}
     > 
+    
       <View style={
         {flex:1,
         alignItems:'center',
         justifyContent:'center'}
         }>
         <Text  style={estilos.titulo}> Som </Text>
-        <Text  style={estilos.subtitulo}> Configurações de Som </Text>
-        <View style={estilos.space} /> 
-      
-      <View style={estilos.space} /> 
-      <View style={estilos.containerBotaoSom}>
-      <TouchableOpacity style={estilos.playBtnSom} onPress={playPause}>
-        <Ionicons name={'ios-play-outline'} size={36} color={'#fff'} />
-      </TouchableOpacity>
+        <Text  style={estilos.subtitulo}> Ouça a música enquanto se tranquiliza </Text>
+      </View>
+
+      <View style={estilos.space} />  
+      <View style={estilos.containerBotaoSom2}>
+        <View style={estilos.AudioPLayer}>
+          {Loading ? (
+            <ActivityIndicator size={'small'} color={'red'} />
+          ) : (
+            <View>
+              {Loaded === false ? (
+                <View>
+                  <ActivityIndicator />
+                  <Text>Loading Song</Text>
+                </View>
+              ) : (
+                <View>
+                  <Text>
+                  
+                  <TouchableOpacity style={estilos.playBtnSom} onPress={PlayAudio}>
+                    <Ionicons name={'ios-play-outline'} size={36} color={'#000000'} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={estilos.playBtnSom} onPress={PauseAudio}>
+                    <Ionicons name={'ios-pause-outline'} size={36} color={'#000000'} />
+                  </TouchableOpacity>
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
     </View>
       <View style={estilos.space} /> 
+      <View>
       <AppButton 
         title="Menu Principal"
         onPress={()=>navigation.navigate('Menu Principal')}
@@ -470,42 +554,24 @@ function Som({navigation}){
     </ImageBackground>
   );
 }
-var Sound = require('react-native-sound');
+/*
+<Button title="Play Song" onPress={PlayAudio} />
+<Button title="Pause Song" onPress={PauseAudio} />
 
-Sound.setCategory('Playback');
-var ding = new Sound(dings, error => {
-  if (error) {
-    console.log('failed to load the sound', error);
-    return;
-  }
-  // if loaded successfully
-  console.log(
-    'duration in seconds: ' +
-      ding.getDuration() +
-      'number of channels: ' +
-      ding.getNumberOfChannels(),
-  );
-});
+          <Button title="Play Sound" onPress={playSound} >
+            <Ionicons name={'ios-play-outline'} size={36} color={'#fff'} />
+          </Button>
+<View style={estilos.containerBotaoSom}>
+      <TouchableOpacity style={estilos.playBtnSom} onPress={playPause}>
+        <Ionicons name={'ios-play-outline'} size={36} color={'#fff'} />
+      </TouchableOpacity>*/
 
-useEffect(() => {
-  ding.setVolume(1);
-  return () => {
-    ding.release();
-  };
-}, []);
-const playPause = () => {
-  ding.play(success => {
-    if (success) {
-      console.log('successfully finished playing');
-    } else {
-      console.log('playback failed due to audio decoding errors');
-    }
-  });
-};
-*/
+
+
 // Componente em forma de funcao / main:
 
 export default function Tranquiliza(){
+  
   return (
     
     <NavigationContainer>
@@ -560,21 +626,19 @@ export default function Tranquiliza(){
                   options={{title:'Histórico',
                   }}
                 />
-                
+                <Pilha.Screen
+                  name="Som"
+                  component={Som}
+                  options={{title:'Som',
+                  }}
+                />
               </Pilha.Navigator>
       </NavigationContainer>
     
 
   );
 };
-/*
-<Pilha.Screen
-                  name="Som"
-                  component={Som}
-                  options={{title:'Som',
-                  }}
-                />
-*/
+
 /* deixados para a mvp 2:
 // 1.  nao interativo do jogo 1 de foco de mente: usuario nao clicar em nenhuma tecla.
 // 2. acima do "Modo Não Interativo - Atividade 2" : 
@@ -638,11 +702,23 @@ const estilos = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#000',
+      //backgroundColor: '#000',
     },
     playBtnSom: {
       padding: 20,
-    }
+    },
+    containerBotaoSom2: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingTop: Constants.statusBarHeight,
+      //backgroundColor: '#ecf0f1',
+      padding: 8,
+    },
+    AudioPLayer: {
+      width: '100%',
+      height: 50,
+      alignItems: 'center',
+    },
 });
 
 

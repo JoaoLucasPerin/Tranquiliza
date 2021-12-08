@@ -34,7 +34,16 @@ db.transaction((tx) => {
  *  - O resultado da Promise é o ID do registro (criado por AUTOINCREMENT)
  *  - Pode retornar erro (reject) caso exista erro no SQL ou nos parâmetros.
  */
+// Removendo diretorio node_modules pelo windows:
 // rmdir node_modules /s /q 
+// upando pro git:
+// git init
+// git status
+// git add . 
+// git commit -m "atualizado 02/12/2021"
+// git remote add origin https://github.com/JoaoLucasPerin/Tranquiliza.git
+// git push -u origin master
+
 const create = (obj) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
