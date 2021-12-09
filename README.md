@@ -11,3 +11,9 @@ Projeto do aplicativo Tranquiliza, para a disciplina de Projeto de Análise e De
 --
 [Histórias de Usuário](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Tranquiliza%20-%20Hist%C3%B3rias%20de%20Usu%C3%A1rio.pptx)
 --
+[Diagrama ER](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Diagrama%20ER%20-%20Tranquiliza.jpg)
+--
+[Quadro Kanban JPEG](https://github.com/JoaoLucasPerin/Tranquiliza/tree/master/Kanban%20-%20Tranquiliza.jpg)
+--
+[Quadro Kanban Trello](https://trello.com/b/J4fTNijl/kanban-tranquiliza)
+--
