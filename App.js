@@ -23,7 +23,8 @@ import { Audio } from 'expo-av';
 import Constants from 'expo-constants';
 
 import Notif from './componentes/Notificacoes'
-
+import AnsEPan from './componentes/AnsiedadeEPanicoTexto'
+import AnsEPanQuadro from './componentes/AnsiedadeEPanico'
 //import Historico from './services/sqlite/Historico'
 
 /**
@@ -397,14 +398,16 @@ function AnsiedadeEPanico({navigation}){
         alignItems:'center',
         justifyContent:'center'}
         }>
-        <Text  style={estilos.titulo}> Ansiedade e Pânico </Text>
-        <Text  style={estilos.subtitulo}> Entendo um pouco sobre elas </Text>
-        <View style={estilos.space} /> 
-      <Text> blablabla blabla blabla </Text>
-
+        <Text  style={estilos.subtitulo}> Entenda um pouco sobre elas </Text>
+        <AnsEPan />
       <View style={estilos.space} /> 
       
+      <AppButton 
+        title="Quadro de Sintomas"
+        onPress={()=>navigation.navigate('Quadro de Sintomas')}
+      />
       <View style={estilos.space} /> 
+      
       <AppButton 
         title="Menu Principal"
         onPress={()=>navigation.navigate('Menu Principal')}
@@ -413,6 +416,11 @@ function AnsiedadeEPanico({navigation}){
     </ImageBackground>
   );
 }
+// <Text  style={estilos.titulo}> Ansiedade e Pânico </Text>
+        
+// <View style={estilos.space} /> 
+//<Text> Segue um quadro contendo os sintomas mais comuns das crises de ansiedade e crises de pânico </Text>
+      
 // <AnsiedadeEPanicoSaibaMais />  trazer o saiba mais como um componente simples...
 
 function Histórico({navigation}){
@@ -554,6 +562,38 @@ function Som({navigation}){
     </ImageBackground>
   );
 }
+
+// fim de som
+
+// Quadro de sintomas
+
+function QuadroDeSintomas({navigation}){
+  return(
+    <ImageBackground
+      source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
+      style={{width: '100%', height: '100%'}}
+    > 
+      <View style={
+        {flex:1,
+        alignItems:'center',
+        justifyContent:'center'}
+        }>
+        <Text  style={estilos.titulo}> Quadro de Sintomas </Text>
+        <View style={estilos.space} /> 
+      
+      <AnsEPanQuadro />
+      
+      <View style={estilos.space} /> 
+      
+      <AppButton 
+        title="Menu Principal"
+        onPress={()=>navigation.navigate('Menu Principal')}
+      />
+      </View>
+    </ImageBackground>
+  );
+}
+
 /*
 <Button title="Play Song" onPress={PlayAudio} />
 <Button title="Pause Song" onPress={PauseAudio} />
@@ -630,6 +670,12 @@ export default function Tranquiliza(){
                   name="Som"
                   component={Som}
                   options={{title:'Som',
+                  }}
+                />
+                <Pilha.Screen
+                  name="Quadro de Sintomas"
+                  component={QuadroDeSintomas}
+                  options={{title:'Quadro de Sintomas',
                   }}
                 />
               </Pilha.Navigator>

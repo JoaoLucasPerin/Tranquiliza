@@ -107,7 +107,7 @@ export default function(){
                 <FlatList
                     data={arrayNumerosAtuais}
                     keyExtractor={item=>item.id.toString()}
-                    renderItem={item=>(<Text>{item.item.valor}</Text>)}
+                    renderItem={item=>(<Text style ={ estilosCxNum.textoFlatList }>{item.item.valor}</Text>)}
                     alignItems='center'
                 />
 
@@ -122,7 +122,7 @@ const estilosCxNum=StyleSheet.create({
         borderColor:'#000'
     },
     estiloNum:{
-        fontSize: 13, 
+        fontSize: 25, 
         textAlign:'center'
     },
     btnCalc:{
@@ -136,5 +136,9 @@ const estilosCxNum=StyleSheet.create({
         fontSize:15,
         textTransform:'uppercase',
         color:'#fff'
+    },
+    textoFlatList:{
+        fontSize: 25,
+        color: "#009688"
     }
 })

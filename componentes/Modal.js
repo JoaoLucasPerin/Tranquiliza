@@ -21,8 +21,9 @@ export default function(){
                 <View style={estilos.modal}>
                     <Text style={estilos.textoModal}>
                         Será apresentado um número entre 100 e 110. 
-                        O jogo consiste em subtrair 7 do valor apresentado. 
-                        Possivelmente iremos lhe perguntar qual o próximo número.
+                        </Text>
+                    <Text style={estilos.textoModal}>
+                        O jogo consiste em subtrair 7 do valor apresentado até chegar a zero.
                     </Text>
                     <Button
                         title="Fechar"
@@ -40,7 +41,7 @@ export default function(){
 
 const estilos=StyleSheet.create({
   modal:{
-      backgroundColor:"#000",
+      backgroundColor:"#009688",
       margin:20,
       padding:20,
       borderRadius:20,
