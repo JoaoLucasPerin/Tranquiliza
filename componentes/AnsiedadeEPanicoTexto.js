@@ -18,8 +18,6 @@ export default class AnsiedadeEPanico extends Component {
         a crise de pânico não tem hora nem motivo para começar.
         </Text>
         
-        <View style={styles.space} /> 
-        
         <Text style = {styles.instructions}> 
         Porém, os sintomas são semelhantes. Se acalme, crises de ansiedade e crises de pânicos são muito comuns! 
         Estima-se que mais de 20% dos jovens sofram disso. Esse número dobrou durante a pandemia do coronavírus, antes esse número era pouco mais do que 10%.

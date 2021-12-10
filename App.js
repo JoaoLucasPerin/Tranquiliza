@@ -25,7 +25,10 @@ import Constants from 'expo-constants';
 import Notif from './componentes/Notificacoes'
 import AnsEPan from './componentes/AnsiedadeEPanicoTexto'
 import AnsEPanQuadro from './componentes/AnsiedadeEPanico'
-//import Historico from './services/sqlite/Historico'
+import Historico from './services/sqlite/Historico'
+
+// import db from "./services/sqlite/SQLiteDatabse";
+
 
 /**
  * Example Historico Object: {
@@ -202,7 +205,9 @@ function TelaInicial({navigation}){
   );
 }
 
+
 function MenuPrincipal({navigation}){
+
   return(
     <ImageBackground
       source={require('./assets/ceu_azul.jpg')} // reference: https://br.freepik.com/vetores-gratis/ceu-azul-com-nuvens-fundo-elegante_9191622.htm
@@ -215,7 +220,8 @@ function MenuPrincipal({navigation}){
         justifyContent:'center'}
         }>
         <Text style={estilos.titulo}> Selecione a atividade que</Text>
-        <Text style={estilos.titulo}> deseja executar</Text>
+        
+        <Text style={estilos.titulo}> deseja executar </Text>
         <View style={estilos.space} /> 
         <AppButton 
           title="Atividade 1 - Foco da mente"
@@ -400,7 +406,6 @@ function AnsiedadeEPanico({navigation}){
         }>
         <Text  style={estilos.subtitulo}> Entenda um pouco sobre elas </Text>
         <AnsEPan />
-      <View style={estilos.space} /> 
       
       <AppButton 
         title="Quadro de Sintomas"
@@ -610,7 +615,33 @@ function QuadroDeSintomas({navigation}){
 
 // Componente em forma de funcao / main:
 
+const printHoraMaisFrequente = (historico) => {
+  console.log(`${historico.hora}`)
+  return historico.hora
+}
+
+
+/*
+const horaMaisFrequente = (async () => {
+  const lotManager = new Historico();
+  const results = await lotManager.retornaHoraNotificacao().then( historicos => historicos.forEach( (c) => printHoraMaisFrequente(c)) );
+  console.log(results);
+  setHoraMaisFrequente2(results);
+});
+*/
+
+Historico.retornaHoraNotificacao(  ) 
+.then( historicos => historicos.forEach( (c) => printHoraMaisFrequente(c)) )
+
+/*
+(async () => {
+  const lotManager = new Historico();
+  const results = await lotManager.retornaHoraNotificacao();
+  console.log(results);
+});
+*/
 export default function Tranquiliza(){
+  
   
   return (
     

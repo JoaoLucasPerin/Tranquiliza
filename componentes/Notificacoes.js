@@ -30,6 +30,8 @@ export default function App() {
       console.log(response);
     });
 
+    
+
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
@@ -112,6 +114,20 @@ async function registerForPushNotificationsAsync() {
       lightColor: '#FF231F7C',
     });
   }
+
+  await Notifications.scheduleNotificationAsync({
+    identifier: "oVASr2N6z5poVY-uMYT7Dz",
+    content: {
+      title: "Execute uma atividade para relaxar",
+      body: "Essa é uma boa hora para realizar um exercício de respiração, pense em algo bom, olhe para o céu, relaxe",
+      data: { data: "goes here" },
+    },
+    trigger: {
+      hour: 19,
+      minute: 0,
+      repeats: true,
+    },
+  });
 
   return token;
 }

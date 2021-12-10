@@ -40,7 +40,7 @@ db.transaction((tx) => {
 // git init
 // git status
 // git add . 
-// git commit -m "atualizado 02/12/2021"
+// git commit -m "atualizado 09/12/2021"
 // git remote add origin https://github.com/JoaoLucasPerin/Tranquiliza.git
 // git push -u origin master
 
@@ -202,6 +202,21 @@ const removeDataVazia = (data) => {
   });
 };
 
+const retornaHoraNotificacao = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      //comando SQL modificável
+      tx.executeSql(
+        "SELECT hora FROM historico GROUP BY hora ORDER BY COUNT(*) DESC LIMIT 1",
+        [],
+        //-----------------------
+        (_, { rows }) => resolve(rows._array),
+        (_, error) => reject(error) // erro interno em tx.executeSql
+      );
+    });
+  });
+};
+
 export default {
   create,
   update,
@@ -210,4 +225,5 @@ export default {
   all,
   remove,
   removeDataVazia,
+  retornaHoraNotificacao,
 };
